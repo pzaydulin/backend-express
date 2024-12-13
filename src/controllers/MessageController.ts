@@ -22,6 +22,21 @@ class MessageController {
     }
   }
 
+  public async getMessageByUserId(request: Request, response: Response) {
+    try {
+      const { id } = request.params;
+      const message = await MessageModel.find({
+        $or: [
+          { to: id },
+          { sender: id }
+        ]
+      });
+      return response.status(201).json({ data: message });
+    } catch (error) {
+      return response.status(400).json({ status: false, error });
+    }
+  }
+
   public async createMessage(request: Request, response: Response) {
     try {
       const { to, sender, subject, body } = request.body;

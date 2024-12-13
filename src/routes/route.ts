@@ -15,6 +15,7 @@ router.get('/users', validateUser, UserControllers.getAllUsers);
 
 router.get('/message', validateUser, MessageController.getAllMessages);
 router.get('/message/:id', validateUser, MessageController.getMessage);
+router.get('/message/:id/filter', validateUser, MessageController.getMessageByUserId);
 router.get('/message/:id/read', validateUser, MessageController.readMessage);
 router.get('/message/:id/delete', validateUser, MessageController.deleteMessage);
 router.post('/message', validateUser, MessageController.createMessage);

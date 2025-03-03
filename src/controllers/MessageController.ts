@@ -5,7 +5,10 @@ import { messageSchema } from "../_helpers/validators";
 class MessageController {
   public async getAllMessages(request: Request, response: Response) {
     try {
-      const messages = await MessageModel.find();
+      const messages = await MessageModel.find()
+        .sort({ createdAt: -1 })
+        .populate("to", "_id name email")
+        .populate("sender", "_id name email");
       return response.status(201).json({ data: messages });
     } catch (error) {
       return response.status(400).json({ status: false, error });
@@ -26,11 +29,11 @@ class MessageController {
     try {
       const { id } = request.params;
       const message = await MessageModel.find({
-        $or: [
-          { to: id },
-          { sender: id }
-        ]
-      });
+        $or: [{ to: id }, { sender: id }],
+      })
+        .sort({ createdAt: -1 })
+        .populate("to", "_id name email")
+        .populate("sender", "_id name email");;
       return response.status(201).json({ data: message });
     } catch (error) {
       return response.status(400).json({ status: false, error });
